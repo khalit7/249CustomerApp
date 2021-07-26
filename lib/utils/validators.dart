@@ -41,5 +41,6 @@ String passwordValidator(String value) {
 }
 
 String usernameValidator(String value) {
+  if (value == null || value.isEmpty) return "Please enter your username";
   return null;
 }

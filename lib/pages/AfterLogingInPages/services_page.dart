@@ -1,5 +1,6 @@
 //widgets
 import 'package:customer249/widgets/custom_drawer.dart';
+import 'package:customer249/widgets/service_widget.dart';
 //packages
 import 'package:provider/provider.dart';
 //main package
@@ -14,74 +15,58 @@ class ServicesPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+          backgroundColor: Colors.grey[200],
           drawer: CustomDrawer(),
           appBar: AppBar(
             title: Text("Services"),
           ),
-          body: Stack(
-            children: [
-              Container(color: Colors.grey[200]),
-              SingleChildScrollView(
-                child: Column(
-                  // mainAxisAlignment: rowAllignment,
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //first row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    //first row
-                    // Row(
-                    //   mainAxisAlignment: rowAllignment,
-                    //   children: [
-                    //     CardWithImageAndText(
-                    //         CustomIconButton(() {
-                    //           Navigator.pushNamed(
-                    //               context, ScanAndPayPage.pageName);
-                    //         }, Icons.scanner),
-                    //         Text(
-                    //             Localization.of(context)
-                    //                 .getTranslatedValue("Scan & Pay"),
-                    //             style: TextStyle(color: Colors.red),
-                    //             textScaleFactor: 1.2)),
-                    //     CardWithImageAndText(
-                    //         CustomIconButton(() {
-                    //           Navigator.pushNamed(context, QRPage.pageName);
-                    //         }, Icons.crop_free_rounded),
-                    //         Text(
-                    //           Localization.of(context)
-                    //               .getTranslatedValue("My QR"),
-                    //           style: TextStyle(color: Colors.red),
-                    //           textScaleFactor: 1.2,
-                    //         )),
-                    //   ],
-                    // ),
-
-                    // //second row
-                    // Row(
-                    //   mainAxisAlignment: rowAllignment,
-                    //   children: [
-                    //     CardWithImageAndText(
-                    //         CustomIconButton(() {
-                    //           Navigator.pushNamed(
-                    //               context, TelecomSevicesPage.pageName);
-                    //         }, Icons.phone),
-                    //         Text(
-                    //             Localization.of(context)
-                    //                 .getTranslatedValue("Telecom Services"),
-                    //             style: TextStyle(color: Colors.red),
-                    //             textScaleFactor: 1.2)),
-                    //     CardWithImageAndText(
-                    //         CustomIconButton(() {
-                    //           Navigator.pushNamed(
-                    //               context, ElectricityServicesPage.pageName);
-                    //         }, Icons.bolt),
-                    //         Text(
-                    //             Localization.of(context)
-                    //                 .getTranslatedValue("Electricity Services"),
-                    //             style: TextStyle(color: Colors.red),
-                    //             textScaleFactor: 1.2)),
-                    // ],
-                    // ),
+                    ServiceWidget(
+                      icon: Icons.meeting_room,
+                      text: "Meeting Room",
+                      onpressed: () {
+                        print("pressed");
+                      },
+                    ),
+                    ServiceWidget(
+                      icon: Icons.group_work,
+                      text: "Workplace",
+                      onpressed: () {
+                        print("pressed");
+                      },
+                    ),
                   ],
                 ),
-              )
-            ],
+
+                //second row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ServiceWidget(
+                      icon: Icons.phone_in_talk,
+                      text: "Consultancy",
+                      onpressed: () {
+                        print("pressed");
+                      },
+                    ),
+                    ServiceWidget(
+                      icon: Icons.assistant,
+                      text: "Mentorship",
+                      onpressed: () {
+                        print("pressed");
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           )),
     );
   }
