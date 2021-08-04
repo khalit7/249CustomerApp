@@ -1,4 +1,9 @@
 //widgets
+import 'package:customer249/pages/AfterLogingInPages/coworking_space_page.dart';
+import 'package:customer249/pages/AfterLogingInPages/my_qr_page.dart';
+import 'package:customer249/pages/AfterLogingInPages/scan_qr_page.dart';
+import 'package:customer249/provider/api_services.dart';
+import 'package:customer249/widgets/Loading_widget.dart';
 import 'package:customer249/widgets/custom_drawer.dart';
 import 'package:customer249/widgets/service_widget.dart';
 //packages
@@ -24,31 +29,42 @@ class ServicesPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                //first row
+                // first row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ServiceWidget(
-                      icon: Icons.meeting_room,
-                      text: "Meeting Room",
+                      icon: Icons.scanner,
+                      text: "Scan QR code",
                       onpressed: () {
-                        print("pressed");
+                        Navigator.pushNamed(context, ScanQRPage.pageName);
                       },
                     ),
                     ServiceWidget(
-                      icon: Icons.group_work,
-                      text: "Workplace",
+                      icon: Icons.crop_free_rounded,
+                      text: "My QR Code",
                       onpressed: () {
+                        Navigator.pushNamed(context, MyQRPage.pageName);
                         print("pressed");
                       },
                     ),
                   ],
                 ),
-
                 //second row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    ServiceWidget(
+                      icon: Icons.meeting_room,
+                      text: "Co-Working Space",
+                      onpressed: () async {
+                        showLoadingDialog(context);
+                        await context.read<ApiService>().getAllResources();
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                            context, CoworkingSpacePage.pageName);
+                      },
+                    ),
                     ServiceWidget(
                       icon: Icons.phone_in_talk,
                       text: "Consultancy",
@@ -56,6 +72,13 @@ class ServicesPage extends StatelessWidget {
                         print("pressed");
                       },
                     ),
+                  ],
+                ),
+
+                //third row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
                     ServiceWidget(
                       icon: Icons.assistant,
                       text: "Mentorship",

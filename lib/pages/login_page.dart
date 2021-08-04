@@ -1,10 +1,15 @@
 import 'package:customer249/pages/AfterLogingInPages/services_page.dart';
+import 'package:customer249/provider/api_services.dart';
 import 'package:customer249/utils/validators.dart';
 import 'package:customer249/widgets/Loading_widget.dart';
+import 'package:customer249/widgets/error_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:customer249/models/api_exception_model.dart' as ApiExceptions;
 
 class LoginPage extends StatefulWidget {
   static final pageName = "LoginPage";
@@ -78,10 +83,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login({String email, String password}) async {
     print("loggin in with $email and $password");
-    showLoadingDialog(context);
     // login
-    Navigator.pop(context);
-    // go to services page
-    Navigator.pushNamed(context, ServicesPage.pageName);
+    try {
+      showLoadingDialog(context);
+      String jwtToken = await context.read<ApiService>().login(email, password);
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      _prefs.setString("jwtToken", jwtToken);
+      Navigator.pop(context);
+      // go to services page
+      Navigator.pushNamed(context, ServicesPage.pageName);
+    } on ApiExceptions.UserDosNotExists catch (e) {
+      Navigator.pop(context);
+      showErrorWidget(context, "invalid email or password !");
+    }
   }
 }

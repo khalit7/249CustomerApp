@@ -1,5 +1,9 @@
+import 'package:customer249/pages/home_page.dart';
+import 'package:customer249/provider/api_services.dart';
+import 'package:customer249/widgets/Loading_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
   build(context) {
@@ -116,7 +120,11 @@ class CustomDrawer extends StatelessWidget {
             ),
             // Log Out
             ListTile(
-              onTap: () {},
+              onTap: () {
+                showLoadingDialog(context);
+                _logOut(context);
+                Navigator.pop(context);
+              },
               leading: Icon(Icons.logout, color: Colors.white),
               title: Text(
                 "Log Out",
@@ -132,5 +140,14 @@ class CustomDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _logOut(context) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.remove("jwtToken");
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pop(context);
+    Navigator.pushNamed(context, HomePage.pageName);
+    Provider.of<ApiService>(context, listen: false).logOut();
   }
 }
