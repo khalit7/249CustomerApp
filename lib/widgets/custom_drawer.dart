@@ -1,3 +1,4 @@
+import 'package:customer249/models/user_model.dart';
 import 'package:customer249/pages/home_page.dart';
 import 'package:customer249/provider/api_services.dart';
 import 'package:customer249/widgets/Loading_widget.dart';
@@ -41,7 +42,26 @@ class CustomDrawer extends StatelessWidget {
             ),
             Center(
               child: Text(
-                "Welcome Khalid",
+                "${UserModel.user.email}",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(
+              height: height / 25,
+            ),
+            // points
+            Center(
+              child: Text(
+                "Remaining points",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(
+              height: height / 200,
+            ),
+            Center(
+              child: Text(
+                " ${UserModel.user.points ?? ""}",
                 style: TextStyle(color: Colors.white),
               ),
             ),

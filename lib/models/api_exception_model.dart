@@ -14,6 +14,10 @@ class UserDosNotExists extends BaseException {}
 
 class ServiceUnavailable extends BaseException {}
 
+class InsufficientPoints extends BaseException {}
+
+class RoomUnavailable extends BaseException {}
+
 class Unknown extends BaseException {
   final String message;
   final int statusCode;
@@ -40,6 +44,10 @@ BaseException parseErrorString(error) {
   switch (error) {
     case "Unauthorized":
       return UserDosNotExists();
+    case "insufficient_points":
+      return InsufficientPoints();
+    case "room_unavailable":
+      return RoomUnavailable();
   }
 }
 

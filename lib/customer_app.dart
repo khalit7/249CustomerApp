@@ -1,4 +1,5 @@
 // UI pages
+import 'package:customer249/pages/AfterLogingInPages/book_resource_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/coworking_space_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/my_qr_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/scan_qr_page.dart';
@@ -7,6 +8,7 @@ import 'package:customer249/pages/login_page.dart';
 import 'package:customer249/pages/signup_page.dart';
 import 'package:customer249/pages/home_page.dart';
 import 'package:customer249/provider/api_services.dart';
+import 'package:customer249/widgets/loading_page.dart';
 // main package
 import 'package:flutter/material.dart';
 // localization
@@ -78,7 +80,7 @@ class _MyAppState extends State<MyApp> {
                   return ServicesPage();
                 }
               } else {
-                return CircularProgressIndicator();
+                return LoadingPage();
               }
             }),
         routes: {
@@ -89,6 +91,7 @@ class _MyAppState extends State<MyApp> {
           MyQRPage.pageName: (context) => MyQRPage(),
           ScanQRPage.pageName: (context) => ScanQRPage(),
           CoworkingSpacePage.pageName: (context) => CoworkingSpacePage(),
+          BookResourcePage.pageName: (context) => BookResourcePage(),
         });
   }
 }
