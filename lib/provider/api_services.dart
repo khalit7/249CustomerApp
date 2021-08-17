@@ -61,7 +61,7 @@ class ApiService {
   Future<void> bookResource(ResourceBookingModel resourceBookingModel) async {
     String endpoint = "booking/book/";
     Map data = {
-      "resource": resourceBookingModel.resourceId,
+      "resource": resourceBookingModel.resource.id,
       "booking_date": resourceBookingModel.date,
       "booked_for": resourceBookingModel.bookedFor
     };
@@ -70,6 +70,18 @@ class ApiService {
     } on DioError catch (e) {
       throw ApiExceptions.parseErrorString(e.response.data['response message']);
     }
+  }
+
+  Future<List<ResourceBookingModel>> getAllBookings() async {
+    String endpoint = "booking/allBookings/";
+    final response = await dio.get(endpoint);
+
+    List<ResourceBookingModel> allBookings = response.data['all_bookings']
+        .map<ResourceBookingModel>(
+            (bookingJson) => ResourceBookingModel.fromJson(bookingJson))
+        .toList();
+
+    return allBookings;
   }
 
   Future<void> logOut() async {

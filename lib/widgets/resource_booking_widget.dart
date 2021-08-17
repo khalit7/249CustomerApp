@@ -1,6 +1,8 @@
 import 'package:customer249/models/resource_booking_model.dart';
 import 'package:customer249/models/resource_model.dart';
+import 'package:customer249/models/user_model.dart';
 import 'package:customer249/provider/api_services.dart';
+import 'package:customer249/utils/parsing.dart';
 import 'package:customer249/widgets/Loading_widget.dart';
 import 'package:customer249/widgets/error_widgets.dart';
 import 'package:customer249/widgets/success_widget.dart';
@@ -39,7 +41,7 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
     }
     if (availableTimeSlots.isEmpty)
       availableTimeSlots.add(customText(
-          "Sorry, this room is fully booked on ${widget.date}. Please chose another date or search for another room."));
+          "Sorry, this room is fully booked on ${widget.date}. Please choose another date or search for another room."));
     return availableTimeSlots;
   }
 
@@ -147,18 +149,18 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
                             //
                             ResourceBookingModel resourceBookingModel =
                                 ResourceBookingModel(
-                                    resourceName: resource.name,
-                                    resourceId: resource.id,
-                                    resourceCapacity: resource.capacity,
-                                    resourcePricePerHour: resource.pricePerHour,
+                                    resource: resource,
                                     totalNumberOfHoursBooked:
                                         numberOfHoursBooked,
                                     totalPrice: totalPrice,
                                     date: widget.date,
-                                    bookedFor: bookinglist.join());
+                                    bookedFor: bookinglist.join(),
+                                    isPending: true,
+                                    isConfirmed: false,
+                                    isRejected: false);
                             //
                             showConfirmBookingDialog(context,
-                                resourceBookingModel: resourceBookingModel);
+                                booking: resourceBookingModel);
                           },
                   ),
                 ))
@@ -180,8 +182,7 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
   }
   // confirm booking alert dialog
 
-  Future showConfirmBookingDialog(context,
-      {ResourceBookingModel resourceBookingModel}) {
+  Future showConfirmBookingDialog(context, {ResourceBookingModel booking}) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -192,44 +193,63 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  DataTable(
-                    showBottomBorder: true,
-                    columns: [
-                      DataColumn(label: tableColoumnscustomText("Room Name")),
-                      DataColumn(
-                          label: tableColoumnscustomText("Room Capacity")),
-                      DataColumn(
-                          label:
-                              tableColoumnscustomText("Room Price Per Hour")),
-                    ],
-                    rows: [
-                      DataRow(cells: [
-                        DataCell(Center(
-                            child: customText("${widget.resource.name}"))),
-                        DataCell(Center(
-                            child: customText("${widget.resource.capacity}"))),
-                        DataCell(Center(
-                            child:
-                                customText("${widget.resource.pricePerHour}"))),
-                      ])
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      showBottomBorder: true,
+                      columns: [
+                        DataColumn(label: tableColoumnscustomText("Room Name")),
+                        DataColumn(
+                            label: tableColoumnscustomText("Room Capacity")),
+                        DataColumn(
+                            label: tableColoumnscustomText("Booking Date")),
+                        DataColumn(
+                            label:
+                                tableColoumnscustomText("Room Price Per Hour")),
+                        DataColumn(
+                            label:
+                                tableColoumnscustomText("Total hours booked")),
+                        DataColumn(
+                            label: tableColoumnscustomText("Total Price")),
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(Center(
+                              child: customText("${booking.resource.name}"))),
+                          DataCell(Center(
+                              child:
+                                  customText("${booking.resource.capacity}"))),
+                          DataCell(
+                              Center(child: customText("${booking.date}"))),
+                          DataCell(Center(
+                              child: customText(
+                                  "${booking.resource.pricePerHour}"))),
+                          DataCell(Center(
+                              child: customText(
+                                  "${booking.totalNumberOfHoursBooked}"))),
+                          DataCell(Center(
+                              child: customText("${booking.totalPrice}")))
+                        ])
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  customText(
-                      "Total hours : ${resourceBookingModel.totalNumberOfHoursBooked} hours"),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  customText(
-                      "Total price : ${resourceBookingModel.totalPrice} Points"),
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    children: [
+                      Text("Booked for : "),
+                      ...parseBookingTimeTableToWidgets(booking.bookedFor)
+                    ],
+                  )
                 ],
               ),
               actions: [
                 FlatButton(
                     onPressed: (() async {
-                      bookResource(context, resourceBookingModel);
+                      bookResource(context, booking);
                     }),
                     color: Colors.green,
                     child: Text("confirm")),
@@ -273,6 +293,7 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
       showLoadingDialog(context);
       await Provider.of<ApiService>(context, listen: false)
           .bookResource(resourceBookingModel);
+      UserModel.user.points -= resourceBookingModel.totalPrice;
       Navigator.pop(context);
       showSuccessWidget(context,
           "booking request has been successfully made, you can monitor the status of your booking requests in the 'manage bookings' page");

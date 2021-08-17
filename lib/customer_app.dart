@@ -4,6 +4,7 @@ import 'package:customer249/pages/AfterLogingInPages/coworking_space_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/my_qr_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/scan_qr_page.dart';
 import 'package:customer249/pages/AfterLogingInPages/services_page.dart';
+import 'package:customer249/pages/drawerPages/manage_booking.dart';
 import 'package:customer249/pages/login_page.dart';
 import 'package:customer249/pages/signup_page.dart';
 import 'package:customer249/pages/home_page.dart';
@@ -92,6 +93,7 @@ class _MyAppState extends State<MyApp> {
           ScanQRPage.pageName: (context) => ScanQRPage(),
           CoworkingSpacePage.pageName: (context) => CoworkingSpacePage(),
           BookResourcePage.pageName: (context) => BookResourcePage(),
+          ManageBookingPage.pageName: (context) => ManageBookingPage(),
         });
   }
 }

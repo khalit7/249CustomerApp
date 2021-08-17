@@ -1,7 +1,10 @@
+import 'package:customer249/models/resource_booking_model.dart';
 import 'package:customer249/models/user_model.dart';
+import 'package:customer249/pages/drawerPages/manage_booking.dart';
 import 'package:customer249/pages/home_page.dart';
 import 'package:customer249/provider/api_services.dart';
 import 'package:customer249/widgets/Loading_widget.dart';
+import 'package:customer249/widgets/resource_booking_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,7 +85,36 @@ class CustomDrawer extends StatelessWidget {
                     border: Border(bottom: BorderSide(color: Colors.white))),
               ),
             ),
-            // Profile
+            // Manage booking
+            ListTile(
+              onTap: () async {
+                try {
+                  showLoadingDialog(context);
+                  // make the api call
+                  List<ResourceBookingModel> allBookings =
+                      await Provider.of<ApiService>(context, listen: false)
+                          .getAllBookings();
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ManageBookingPage(bookingsList: allBookings)),
+                  );
+                } catch (e) {}
+              },
+              leading: Icon(Icons.book_online, color: Colors.white),
+              title: Text(
+                "Manage Bookings",
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Container(
+                height: height / 35,
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.white))),
+              ),
+            ),
+            // Requests status
             ListTile(
               onTap: () {},
               leading: Icon(Icons.pending, color: Colors.white),
