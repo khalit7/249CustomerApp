@@ -11,14 +11,15 @@ class HomePage extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text("249 StartUps"),
+        ),
         body: Stack(children: [
           Positioned(
             left: (width / 2) - ((width * height / 1500) / 2),
             right: (width / 2) - ((width * height / 1500) / 2),
-            top: (height / 2),
-            bottom: (height / 2) - (width * height / 2000),
-            child: Container(
+            top: (height / 3),
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   CustomFlatButton1(width, height, "LOGIN", () {

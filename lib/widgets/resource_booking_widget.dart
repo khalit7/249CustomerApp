@@ -77,7 +77,7 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        height: height / 6,
+        height: height / 4,
         width: width,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +266,7 @@ class _ResourceBookingWidgetState extends State<ResourceBookingWidget> {
   Text customText(String text) {
     return Text(
       text,
-      textScaleFactor: 1.2,
+      textScaleFactor: 1.0,
       style: TextStyle(fontWeight: FontWeight.w400),
     );
   }

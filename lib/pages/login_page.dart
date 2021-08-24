@@ -27,14 +27,15 @@ class _LoginPageState extends State<LoginPage> {
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text("Login"),
+        ),
         body: Stack(
           children: [
             Positioned(
               left: (width / 2) - ((width * height / 1500) / 2),
               right: (width / 2) - ((width * height / 1500) / 2),
               top: (height / 4),
-              bottom: (height / 2) - (width * height / 2000),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(

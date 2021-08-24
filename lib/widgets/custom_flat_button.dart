@@ -10,6 +10,7 @@ class CustomFlatButton1 extends StatelessWidget {
   build(context) {
     return FlatButton(
       minWidth: width * height / size,
+      height: height / 100,
       color: backgroundColor,
       textColor: textColor,
       onPressed: () {

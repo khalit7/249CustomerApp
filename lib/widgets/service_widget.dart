@@ -11,8 +11,8 @@ class ServiceWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, width / 36, 0, width / 36),
       child: Ink(
-        width: width / 3.5,
-        height: width / 3.5,
+        width: width / 2.3,
+        height: width / 2.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
           color: Colors.grey,
@@ -39,7 +39,7 @@ class ServiceWidget extends StatelessWidget {
               ),
               Text(
                 text,
-                textScaleFactor: 1.3,
+                textScaleFactor: 1.15,
                 style: TextStyle(color: Colors.purple),
               )
             ],
